@@ -41,10 +41,10 @@ $$
 
 where:
 
-- \(\phi\) is a random number in \([-1, 1]\)  
-- \(\theta_k\) is a different bee  
+- $\phi$ is a random number in \([-1, 1]\)  
+- $\theta_k$ is a different bee  
 
-If fitness improves → bee updates position.
+If fitness improves, then bee updates position.
 
 ---
 
@@ -98,7 +98,7 @@ Computed using C++ PID simulator.
 
 ## 6. Parallel BCO (OpenMP)
 
-Fitness evaluation is independent → perfect for parallelism.
+Fitness evaluation is independent which is perfect for parallelism.
 
 ### Serial:
 ```

@@ -8,14 +8,14 @@
 A PID (Proportional–Integral–Derivative) controller adjusts a system’s input using:
 
 $$
-u(t) = K_p\, e(t) + K_i \int e(t)\, dt + K_d\, \frac{de(t)}{dt},
+u(t) = K_p\ e(t) + K_i \int e(t)\ dt + K_d\ \frac{de(t)}{dt}
 $$
 
 where:
 
-- \( e(t) = r(t) - y(t) \) is the tracking error  
-- \( r(t) \) is a unit step  
-- \( y(t) \) is the plant output  
+-  $e(t) = r(t) - y(t)$  is the tracking error  
+-  $r(t)$  is a unit step  
+-  $y(t)$  is the plant output  
 
 In our C++ PID simulator:
 
@@ -60,7 +60,7 @@ must be converted into a **differential equation** to simulate numerically.
 
 ---
 
-### ### 3.1 First-Order System \(G_1(s)\)
+### 3.1 First-Order System \(G_1(s)\)
 
 $$
 G_1(s) = \frac{1}{s + 1}
@@ -86,7 +86,7 @@ y += dt * (-1*y + 1*u);
 
 ---
 
-### ### 3.2 Second-Order System \(G_2(s)\)
+### 3.2 Second-Order System \(G_2(s)\)
 
 $$
 G_2(s) = \frac{5}{s^2 + 2s + 5}
@@ -123,7 +123,7 @@ y = x1;
 
 ---
 
-### ### 3.3 Third-Order System \(G_3(s)\)
+### 3.3 Third-Order System \(G_3(s)\)
 
 Denominator expanded:
 
