@@ -7,131 +7,215 @@
 
 A PID (Proportional–Integral–Derivative) controller adjusts a system’s input using:
 
-\[
-u(t) = K_p e(t) + K_i \int e(t)\, dt + K_d \frac{de(t)}{dt},
-\]
+$$
+u(t) = K_p\, e(t) + K_i \int e(t)\, dt + K_d\, \frac{de(t)}{dt},
+$$
 
-where  
-\(e(t) = r(t) - y(t)\) is the tracking error.
+where:
 
-In the C++ PID simulator:
+- \( e(t) = r(t) - y(t) \) is the tracking error  
+- \( r(t) \) is a unit step  
+- \( y(t) \) is the plant output  
 
-- r(t) is a unit step  
-- y(t) is the output  
-- Goal is to minimize tracking error  
-- Optimization target is **Mean Squared Error (MSE)**
+In our C++ PID simulator:
+
+- The goal is to **minimize tracking error**
+- The optimization target is **Mean Squared Error (MSE)**
 
 ---
 
 ## 2. Plant Models
 
-### First-order:
-\[
+We evaluate the PID controller on three transfer functions.
+
+### **First-order plant**
+
+$$
 G_1(s) = \frac{1}{s + 1}
-\]
+$$
 
-### Second-order:
-\[
+### **Second-order plant**
+
+$$
 G_2(s) = \frac{5}{s^2 + 2s + 5}
-\]
+$$
 
-### Third-order:
-\[
+### **Third-order plant**
+
+$$
 G_3(s) = \frac{10}{(s + 1)(s^2 + 2s + 10)}
-\]
+$$
 
 ---
 
-## 3. From Transfer Functions to Differential Equations
+## 3. Converting Transfer Functions to Time-Domain Equations
 
-We convert Laplace-domain models into time-domain ODEs.
+A transfer function:
 
-### First-order:
-\[
-y' + y = u
-\]
-C++:
+$$
+G(s) = \frac{Y(s)}{U(s)}
+$$
+
+must be converted into a **differential equation** to simulate numerically.
+
+---
+
+### ### 3.1 First-Order System \(G_1(s)\)
+
+$$
+G_1(s) = \frac{1}{s + 1}
+$$
+
+Multiply:
+
+$$
+(s + 1)Y(s) = U(s)
+$$
+
+Inverse Laplace:
+
+$$
+y'(t) + y(t) = u(t)
+$$
+
+Which becomes the numerical update:
+
 ```
-y += dt * (-a * y + b * u);
+y += dt * (-1*y + 1*u);
 ```
 
-### Second-order:
-\[
+---
+
+### ### 3.2 Second-Order System \(G_2(s)\)
+
+$$
+G_2(s) = \frac{5}{s^2 + 2s + 5}
+$$
+
+Time domain:
+
+$$
 y'' + 2y' + 5y = 5u
-\]
+$$
 
-State form:
-\[
+State variables:
+
+- \(x_1 = y\)
+- \(x_2 = y'\)
+
+Then:
+
+$$
 x_1' = x_2
-\]
-\[
+$$
+
+$$
 x_2' = 5u - 2x_2 - 5x_1
-\]
+$$
 
-C++:
+C++ implementation:
+
 ```
-double y_ddot = b*u - a1*x2 - a0*x1;
+x2 += dt * (5*u - 2*x2 - 5*x1);
+x1 += dt * x2;
+y = x1;
 ```
 
-### Third-order:
-Expanded:
-\[
+---
+
+### ### 3.3 Third-Order System \(G_3(s)\)
+
+Denominator expanded:
+
+$$
+(s+1)(s^2 + 2s + 10) = s^3 + 3s^2 + 12s + 10
+$$
+
+Time domain:
+
+$$
 y''' + 3y'' + 12y' + 10y = 10u
-\]
+$$
 
 State form:
-\[
-x_1' = x_2, \quad x_2' = x_3
-\]
-\[
+
+- \(x_1 = y\)
+- \(x_2 = y'\)
+- \(x_3 = y''\)
+
+Then:
+
+$$
 x_3' = 10u - 3x_3 - 12x_2 - 10x_1
-\]
+$$
 
-C++:
+C++ implementation:
+
 ```
-double y_dddot = b*u - a2*x3 - a1*x2 - a0*x1;
+x3 += dt * (10*u - 3*x3 - 12*x2 - 10*x1);
+x2 += dt * x3;
+x1 += dt * x2;
+y = x1;
 ```
 
 ---
 
-## 4. Numerical Simulation (Euler Method)
+## 4. Euler Numerical Integration
 
-We use:
-\[
+We use the simple Euler method:
+
+$$
 x(t + dt) = x(t) + dt \cdot x'(t)
-\]
+$$
 
-`dt = 0.01`, `simTime = 40`.
+Values used:
+
+- **dt = 0.01**
+- **simTime = 40 seconds**
+
+This is fast and stable for PID tuning.
 
 ---
 
-## 5. Fitness (MSE)
+## 5. Fitness Function (MSE)
 
-\[
-\text{MSE} = \frac{1}{N}\sum (1 - y(t))^2
-\]
+After simulating the response:
 
-Used as fitness for optimization.
+$$
+e(t) = 1 - y(t)
+$$
+
+MSE is:
+
+$$
+\text{MSE} = \frac{1}{N} \sum e(t)^2
+$$
+
+Lower MSE → better PID controller.
 
 ---
 
 ## 6. Summary Table
 
-| Plant | Order | ODE |
-|-------|--------|----------------|
-| G1 | 1st | y' = -y + u |
-| G2 | 2nd | y'' = 5u - 2y' - 5y |
-| G3 | 3rd | y''' = 10u - 3y'' - 12y' - 10y |
+| Plant | Order | Differential Equation |
+|------|-------|------------------------|
+| \(G_1(s)\) | 1st | \(y' = -y + u\) |
+| \(G_2(s)\) | 2nd | \(y'' = 5u - 2y' - 5y\) |
+| \(G_3(s)\) | 3rd | \(y''' = 10u - 3y'' - 12y' - 10y\) |
 
 ---
 
-## 7. Diagram
+## 7. Block Diagram
+
 ```
         +-------------+        +-----------+
- r(t) → |    PID      |  u(t) →|   Plant   | → y(t)
+ r(t) → |    PID      |  u(t) → |   Plant  | → y(t)
         +-------------+        +-----------+
                 ↑                     |
                 |_____________________|
                     Negative feedback
 ```
 
+---
+
+# END OF FILE
