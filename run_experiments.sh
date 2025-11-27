@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # ------------------------------
-# AUTOMATED PARALLEL RUN SCRIPT
 # For: bco_parallel
 # Generates: parallel_results.csv
 # ------------------------------
@@ -26,9 +25,7 @@ for t in "${THREADS[@]}"; do
         # Run in CSV mode so it prints:
         # threads,plant,time,checksum
         ./bco_parallel $t $p C >> $OUTPUT_FILE
-
-        sleep 0.5   # small delay to avoid overheating on Mac
-
+        sleep 0.5   # small delay
     done
 done
 
