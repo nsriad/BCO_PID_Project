@@ -1,8 +1,60 @@
-build/
+# ============================
+# Build artifacts / binaries
+# ============================
 *.o
-*.exe
+*.obj
 *.out
+*.exe
+*.a
+*.so
+*.dll
+*.dylib
+*.class
+
+# Executables in project root
+bco_serial
+bco_parallel
+
+# Any executables inside src/ or bin/
+bin/
+build/
+cmake-build*/
+
+# ============================
+# Logs / experiment outputs
+# ============================
+*.csv
 *.log
+data/logs/*
+parallel_results.csv
+
+# ============================
+# VS Code / Editor configs
+# ============================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ============================
+# macOS files
+# ============================
 .DS_Store
-.vscode
-data/
+._*
+
+# ============================
+# Python cache (if plotting script)
+# ============================
+__pycache__/
+*.pyc
+
+# ============================
+# Latex and auxiliary files
+# ============================
+*.aux
+*.bbl
+*.blg
+*.log
+*.synctex.gz
+*.toc
+*.out
