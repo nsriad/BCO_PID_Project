@@ -11,7 +11,7 @@ The goal is to compare:
 2. Serial BCO vs. OpenMP-parallel BCO in terms of execution time and scaling behavior.
 
 ## Repository Structure
-
+```
 BCO_PID_Project/
 ├─ include/
 │  ├─ bco.h
@@ -34,7 +34,7 @@ BCO_PID_Project/
 ├─ run_experiments.sh
 ├─ parallel_results.csv
 ├─ README.md
-
+```
 ## Plant Models
 
 G1(s) = 1/(s+1)
@@ -44,7 +44,7 @@ G3(s) = 10/((s+1)(s^2 + 2s + 10))
 ## Building the Code
 
 Parallel version:
-
+```
 g++-15 -Iinclude \
     src/bco_parallel.cpp \
     src/main_parallel.cpp \
@@ -52,25 +52,26 @@ g++-15 -Iinclude \
     src/utils.cpp \
     src/bco.cpp \
     -fopenmp -O2 -o bco_parallel
-
+```
 Serial:
 
+```
 g++-15 -Iinclude \
     src/bco.cpp \
     src/main_serial.cpp \
     src/pid_simulator.cpp \
     src/utils.cpp \
     -O2 -o bco_serial
-
+```
 ## Running
-
+```
 ./bco_parallel <threads> <plant> H
 ./bco_parallel <threads> <plant> C
-
+```
 ## Automated Experiments
-
+```
 ./run_experiments.sh
-
+```
 ## Notes
 
 BCO is stochastic; thread counts lead to slightly different optimization trajectories.
