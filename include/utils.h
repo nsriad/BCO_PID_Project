@@ -2,7 +2,7 @@
 #define UTILS_H
 
 // Call once at the beginning of main() to seed the RNG
-void initRandom();
+void initRandom(int baseSeed = 12345);
 
 // Random double in [min, max]
 double randomDouble(double min, double max);

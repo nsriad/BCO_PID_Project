@@ -31,7 +31,7 @@ void getG3(vector<double>& num, vector<double>& den)
 
 int main()
 {
-    initRandom();
+    initRandom(12345);
 
     // --- Select Plant ---
     vector<double> num, den;
