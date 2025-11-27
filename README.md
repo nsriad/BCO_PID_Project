@@ -37,9 +37,9 @@ BCO_PID_Project/
 ```
 ## Plant Models
 
-G1(s) = 1/(s+1)
-G2(s) = 5/(s^2 + 2s + 5)
-G3(s) = 10/((s+1)(s^2 + 2s + 10))
+ - G1(s) = 1/(s+1)
+ - G2(s) = 5/(s^2 + 2s + 5)
+ - G3(s) = 10/((s+1)(s^2 + 2s + 10))
 
 ## Building the Code
 
