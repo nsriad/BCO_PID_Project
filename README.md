@@ -1,6 +1,6 @@
 # Parallel Bee Colony Optimization for PID Tuning
 
-This repository contains my CPE 512 project, where I use a Bee Colony Optimization (BCO) meta-heuristic to tune a PID controller for several plant models. The project includes:
+This repository uses a Bee Colony Optimization (BCO) meta-heuristic to tune a PID controller for several plant models. The project includes:
 
 - A **MATLAB/Simulink** baseline for classic PID tuning and performance metrics.
 - A **serial C++ implementation** of BCO-based PID tuning.
@@ -42,6 +42,15 @@ BCO_PID_Project/
  - G3(s) = 10/((s+1)(s^2 + 2s + 10))
 
 ## Building the Code
+
+This project is developed and tested on macOS (Apple Silicon) with g++-15 from Homebrew and OpenMP enabled.
+
+### Requirements
+
+ - C++17-capable compiler with OpenMP support
+     - On macOS (Apple Silicon): g++-15 from Homebrew
+ - MATLAB / Simulink (optional, for baseline experiments).
+ - Python + matplotlib (optional, for plotting speedup/efficiency later).
 
 Parallel version:
 ```
